@@ -1,19 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { v4 as uuidv4 } from 'uuid';
+import { v1 as uuidv1 } from 'uuid';
 
 type Todo = {
     id: string,
     title: string,
     completed: boolean
 }
+
 type TodosState = {
-  notes: Todo[]
+  [key: string]: Todo[]
 }
 
 const initialState: TodosState = {
-  notes: [
-    { id: uuidv4(), title: "start", completed: true },
-    { id: uuidv4(), title: "end", completed: false }
+  [uuidv1()]: [
+    { id: uuidv1(), title: "start", completed: true },
+    { id: uuidv1(), title: "end", completed: false }
   ]
 }
 
@@ -22,7 +23,7 @@ export const notesSlice = createSlice({
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<string>) => {
-      state.notes.push({id: uuidv4(), title: action.payload, completed: false})
+      state.notes.push({id: uuidv1(), title: action.payload, completed: false})
     },
     removeNote: (state, action: PayloadAction<string>) => { 
       state.notes = state.notes.filter(note => note.id !== action.payload)
