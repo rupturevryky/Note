@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { v1 as uuidv1 } from 'uuid';
 
 import { addNote } from "../../slices/notesSlice";
 import { useAppSelector, useAppDispatch } from "../../store/hooks"
