@@ -1,5 +1,5 @@
 
-import Note from '../Note/Note';
+import Noteboock from '../Notebook/Notebook';
 import './App.scss';
 
 function App() {
@@ -7,9 +7,7 @@ function App() {
   
 
   return (
-    <div className="App">
-      <Note/>
-    </div>
+      <Noteboock/>
   );
 }
 

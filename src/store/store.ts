@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import notesSlice from '../slices/notesSlice'
+import notebook from './../slices/notebookSlice'
+import notes from '../slices/notesSlice'
 
 const store = configureStore({
   reducer: {
-    notesSlice,
+    notes,
+    notebook
   },
   devTools: process.env.NODE_ENV !== 'production',
 })

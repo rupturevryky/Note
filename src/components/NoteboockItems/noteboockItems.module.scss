@@ -1,0 +1,12 @@
+@import '../../style/constants.scss';
+
+.noteboockItems {
+    display: inline-block;
+   
+    width: 300px;
+    border-radius: 15px;
+    padding: 12px;
+    margin: 8px;
+    
+    background-color: $bgcCards;
+}
