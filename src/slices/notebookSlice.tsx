@@ -9,13 +9,13 @@ type Todo = {
 type notebookType = {
     notebook: Todo[]
 }
-type actionchangeFilter = {
+type actionChangeFilter = {
     id: string,
     filter: 'all' | 'completed' | 'uncompleted'
 }
 const initialState: notebookType = {
     notebook: [
-    { id: uuidv1(), title: "start", filter: 'all' },
+    { id: '1', title: "start", filter: 'all' },
     { id: uuidv1(), title: "end", filter: 'all' }
   ]}
 
@@ -29,7 +29,7 @@ export const notebookSlice = createSlice({
     removeNotebook: (state, action: PayloadAction<string>) => { 
       state.notebook = state.notebook.filter(note => note.id !== action.payload)
     },
-    changeFilter: (state, action: PayloadAction<actionchangeFilter>) => { 
+    changeFilter: (state, action: PayloadAction<actionChangeFilter>) => { 
       const changeTodo = state.notebook.find(note => note.id === action.payload.id)
       if (changeTodo) {
         changeTodo.filter = action.payload.filter

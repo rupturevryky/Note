@@ -13,7 +13,6 @@ const Noteboock: React.FC = () => {
           key={notebook.id} id={notebook.id}
           title={notebook.title} filter={notebook.filter}
           />
-
     ))
     
 

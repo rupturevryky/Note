@@ -1,14 +1,28 @@
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
+import { toggleCompleted } from '../../slices/notesSlice';
+import { useAppDispatch } from '../../store/hooks'
 
-const Note = () => {
+interface NoteProps{
+    nodeId: string,
+    id: string,
+    title: string,
+    completed: boolean
+}
 
-    // const notes = useAppSelector(state => state.notesSlice.notes)
+const Note: React.FC<NoteProps> = ({id, title, completed, nodeId}) => {
+
     const dispatch = useAppDispatch()
-    
+
+    const onChangeHandler = (noteId: string, titleId: string) => {
+        const action = { noteId: noteId, titleId: titleId }
+        
+        dispatch(toggleCompleted(action))
+    }
     return (
-        <div>
-            
-        </div>
+        <li>
+            {title}
+            <input type="checkbox" name="checkbox" checked={completed}
+                onChange={ () => onChangeHandler(nodeId, id)} />
+        </li>  
     );
 };
 
