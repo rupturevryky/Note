@@ -1,7 +1,9 @@
 @import '../../style/constants.scss';
 
 .noteboockItems {
-    display: inline-block;
+    // display: flex;
+    flex-direction: column;
+    text-align: left;
    
     width: 300px;
     border-radius: 15px;

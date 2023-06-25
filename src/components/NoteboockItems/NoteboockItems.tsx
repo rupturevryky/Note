@@ -114,11 +114,13 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
     return (
         <div className={s.noteboockItems}>
             {titleInput}
-            {noteList}
+            <ul>
+                {noteList}
+            </ul>
             {AddTaskForm}
             <button onClick={addNewTaskHandler}>Add new task</button> {/* Открывает и закрывает input для новой note-ы*/}
         </div> 
-    );
-};
+    )
+}
 
 export default NoteboockItems;

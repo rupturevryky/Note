@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import { removeNote, renameNote, toggleCompleted } from '../../slices/notesSlice';
 import { useAppDispatch } from '../../store/hooks'
 
+import s from './note.module.scss'
 interface NoteProps{
     notebookId: string,
     noteId: string,
@@ -50,17 +52,18 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed })
         ? <input value={noteName}
             onChange={e => setNoteName(e.target.value)}
             onKeyDown={e => renameNoteTitle(e.key)}
-            onBlur={() => renameNoteTitle()} />
+            onBlur={() => renameNoteTitle()}
+            autoFocus/>
         : <p onDoubleClick={() => setNoteNameInputActive(true)}>{noteName}</p>
     
     return (
-        <li>
+        <li className={s.li}>
             {noteNameBlock}
             <input type="checkbox" name="checkbox" checked={completed}
                 onChange={() => onChangeCheckboxHandler(notebookId, noteId)}/>
             <button onClick={() => onDeleteHandler(notebookId, noteId)}>Delete note</button>
         </li>  
-    );
-};
+    )
+}
 
 export default Note;
