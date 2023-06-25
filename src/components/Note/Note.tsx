@@ -58,9 +58,9 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed })
     
     return (
         <li className={s.li}>
-            {noteNameBlock}
             <input type="checkbox" name="checkbox" checked={completed}
                 onChange={() => onChangeCheckboxHandler(notebookId, noteId)}/>
+            {noteNameBlock}
             <button onClick={() => onDeleteHandler(notebookId, noteId)}>Delete note</button>
         </li>  
     )

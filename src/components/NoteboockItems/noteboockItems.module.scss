@@ -1,14 +1,16 @@
 @import '../../style/constants.scss';
 
 .noteboockItems {
-    // display: flex;
     flex-direction: column;
     text-align: left;
    
-    width: 300px;
+    // width: 300px;
     border-radius: 15px;
     padding: 12px;
     margin: 8px;
     
     background-color: $bgcCards;
+}
+.addNewTaskButton{
+    display: flex;
 }

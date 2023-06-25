@@ -118,7 +118,7 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
                 {noteList}
             </ul>
             {AddTaskForm}
-            <button onClick={addNewTaskHandler}>Add new task</button> {/* Открывает и закрывает input для новой note-ы*/}
+            <button onClick={addNewTaskHandler} className={s.addNewTaskButton}>Add new task</button> {/* Открывает и закрывает input для новой note-ы*/}
         </div> 
     )
 }
