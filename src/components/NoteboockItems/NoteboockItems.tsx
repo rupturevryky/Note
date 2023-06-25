@@ -20,34 +20,54 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  id, title, filter }) =
     const [AddTaskFormIsActive, setAddTaskFormIsActive] = useState<boolean>(false)
     const [TaskFormValue, setAddTaskFormValue] = useState<string>('')
      
-    const noteList = notes?.map(note => (
+    const noteList = notes?.map(note => (       //создание мелких заметок
         <Note
-            nodeId={id}
+            nodebookId={id}
             id={note.id}
             title={note.title}
             completed={note.completed}
             key={note.id} />
     ))
+    const EraseEverything = () => {
+        setAddTaskFormValue('')                                 // стирает локальный state
+        setAddTaskFormIsActive(false)                           // закрывает input для созданной task-и
+    }
 
     const addTaskHandler = () => {
-        const action = { noteId: id, title: TaskFormValue }
-        dispatch(addNote(action))               // создаёт новую заметку
-        setAddTaskFormValue('')                 // стирает локальный state
-        setAddTaskFormIsActive(false)           // закрывает input для созданной task-и
+        if (TaskFormValue && TaskFormValue.trim() !== '') {                // проверка input-а на пустоту
+            const action = { nodebookId: id, title: TaskFormValue }
+            dispatch(addNote(action))                               // создаёт новую заметку
+            EraseEverything()
+        } else {
+            EraseEverything()
+        }
+        
     }
     const addTaskFormHandler = (value: string) => { // Управляемый input для новой task-и
         setAddTaskFormValue(value)
     }
 
     const addNewTaskHandler = () => {
+        if (AddTaskFormIsActive) {
+            EraseEverything()
+            return
+        }
         setAddTaskFormIsActive(true)
     }
-    
+
+    const EnterTaskFormHandler = (key: string) => {
+        if (key === "Enter") {
+            addTaskHandler()
+        }
+    }
+
     const AddTaskForm = AddTaskFormIsActive    
         ? <><input                               // input с строкой для новой task-и
             placeholder="Add your task..."
             value={TaskFormValue}
-            onChange={(e) => addTaskFormHandler(e.target.value)} /> 
+            onChange={(e) => addTaskFormHandler(e.target.value)}
+            onKeyDown={e => EnterTaskFormHandler(e.key)}        // добавляет task-у по нажатию Enter
+            autoFocus/> 
             <button onClick={addTaskHandler}>add</button></>  // создаёт task-у и убирает input
         : null
     

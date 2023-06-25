@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { v1 as uuidv1 } from 'uuid'
 
 type Todo = {
     id: string,
@@ -16,7 +15,6 @@ type actionChangeFilter = {
 const initialState: notebookType = {
     notebook: [
     { id: '1', title: "start", filter: 'all' },
-    { id: uuidv1(), title: "end", filter: 'all' }
   ]}
 
 export const notebookSlice = createSlice({
@@ -24,7 +22,7 @@ export const notebookSlice = createSlice({
   initialState,
   reducers: {
     addNotebook: (state, action: PayloadAction<string>) => {
-      state.notebook.push({id: uuidv1(), title: action.payload, filter: 'all'})
+      state.notebook.unshift({id: action.payload, title: "New notebook", filter: 'all'})
     },
     removeNotebook: (state, action: PayloadAction<string>) => { 
       state.notebook = state.notebook.filter(note => note.id !== action.payload)

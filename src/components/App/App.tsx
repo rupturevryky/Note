@@ -1,14 +1,17 @@
 
+import AddNoteboockButton from '../AddNoteboockButton/AddNoteboockButton';
 import Noteboock from '../Notebook/Notebook';
-import './App.scss';
+
+import s from './App.module.scss';
 
 function App() {
 
-  
-
   return (
-      <Noteboock/>
-  );
+    <div className={s.App}>
+      <AddNoteboockButton/>
+      <Noteboock />
+    </div>
+  )
 }
 
 export default App;

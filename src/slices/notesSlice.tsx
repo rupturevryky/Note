@@ -12,12 +12,12 @@ type TodosState = {
 }
 
 type AddNote = {
-  noteId: string,
+  nodebookId: string,
   title: string
 }
 
 type Note = {
-  noteId: string,
+  nodebookId: string,
   titleId: string
 }
 
@@ -33,20 +33,23 @@ export const notesSlice = createSlice({
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<AddNote>) => {
-      state[action.payload.noteId].push({id: uuidv1(), title: action.payload.title, completed: false})
+      state[action.payload.nodebookId].push({id: uuidv1(), title: action.payload.title, completed: false})
     },
     removeNote: (state, action: PayloadAction<Note>) => { 
-      state[action.payload.noteId] = state[action.payload.noteId].filter(note => note.id !== action.payload.titleId)
+      state[action.payload.nodebookId] = state[action.payload.nodebookId].filter(note => note.id !== action.payload.titleId)
     },
     toggleCompleted: (state, action: PayloadAction<Note>) => { 
-      const toggledTodo = state[action.payload.noteId].find(note => note.id === action.payload.titleId)
+      const toggledTodo = state[action.payload.nodebookId].find(note => note.id === action.payload.titleId)
       if (toggledTodo) {
         toggledTodo.completed = !toggledTodo.completed
       }
+    },
+    addNotebookForNotesList: (state, action: PayloadAction<string>) => {
+      state[action.payload] = []
     }
   },
 })
 
-export const { addNote, removeNote, toggleCompleted } = notesSlice.actions
+export const { addNote, removeNote, toggleCompleted, addNotebookForNotesList } = notesSlice.actions
 
 export default notesSlice.reducer

@@ -9,7 +9,7 @@ const Noteboock: React.FC = () => {
     const notebooks = useAppSelector(state => state.notebook.notebook)
 
     const notebookList = notebooks.map(notebook => (
-        <NoteboockItems
+        <NoteboockItems                                     // загрузка notebooks
           key={notebook.id} id={notebook.id}
           title={notebook.title} filter={notebook.filter}
           />
