@@ -1,31 +1,64 @@
-import { removeNote, toggleCompleted } from '../../slices/notesSlice';
+import { useState } from 'react';
+import { removeNote, renameNote, toggleCompleted } from '../../slices/notesSlice';
 import { useAppDispatch } from '../../store/hooks'
 
 interface NoteProps{
-    nodebookId: string,
-    id: string,
-    title: string,
+    notebookId: string,
+    noteId: string,
+    noteTitle: string,
     completed: boolean
 }
 
-const Note: React.FC<NoteProps> = ({id, title, completed, nodebookId}) => {
+const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed }) => {
 
     const dispatch = useAppDispatch()
-
-    const onChangeHandler = (nodebookId: string, titleId: string) => {
-        const action = { nodebookId: nodebookId, titleId: titleId }
+    const [noteNameInputActive, setNoteNameInputActive] = useState(false)
+    const [noteName, setNoteName] = useState(noteTitle)
+    
+    const onChangeCheckboxHandler = (nodebookId: string, noteId: string) => {
+        const action = { nodebookId: nodebookId, noteId: noteId }
         dispatch(toggleCompleted(action))
     }
-    const onDeleteHandler = (nodebookId: string, titleId: string) => {
-        const action = { nodebookId: nodebookId, titleId: titleId }
+    const onDeleteHandler = (nodebookId: string, noteId: string) => {
+        const action = { nodebookId: nodebookId, noteId: noteId }
         dispatch(removeNote(action))
     }
+    const renameNoteTitle = (key?: string) => {
+        if (key) {
+            if (key === "Enter" && noteName.trim() !== '' && noteName !== noteTitle) {
+                dispatch(renameNote({ notebookId: notebookId, noteId: noteId, newNoteName: noteName }))    // меняет title в state.notebook
+                setNoteNameInputActive(false)
+            } else if (key === "Enter" && noteName.trim() !== '') {                        // менять title в state.notebook бессмысленно, ведь он не изменился
+                setNoteNameInputActive(false)
+            } else if (key === "Enter" && noteName.trim() === '') {                        // пустое поле возвращается на нормальное со значением из state
+                setNoteName(noteTitle)
+                setNoteNameInputActive(false)
+            }
+        } else {                                                                            // в onBlur функция renameStateTitle проискодит без key
+            if (noteName.trim() !== '' && noteName !== noteTitle) {
+                dispatch(renameNote({ notebookId: notebookId, noteId: noteId, newNoteName: noteName }))    // аналогично верхней части
+                setNoteNameInputActive(false)
+            } else if (noteName.trim() !== '') {
+                setNoteNameInputActive(false)
+            } else if (noteName.trim() === '') {
+                setNoteName(noteTitle)
+                setNoteNameInputActive(false)
+            }
+        }
+    }
+    const noteNameBlock = noteNameInputActive
+        ? <input value={noteName}
+            onChange={e => setNoteName(e.target.value)}
+            onKeyDown={e => renameNoteTitle(e.key)}
+            onBlur={() => renameNoteTitle()} />
+        : <p onDoubleClick={() => setNoteNameInputActive(true)}>{noteName}</p>
+    
     return (
         <li>
-            {title}
+            {noteNameBlock}
             <input type="checkbox" name="checkbox" checked={completed}
-                onChange={() => onChangeHandler(nodebookId, id)}/>
-            <button onClick={() => onDeleteHandler(nodebookId, id)}>Delete note</button>
+                onChange={() => onChangeCheckboxHandler(notebookId, noteId)}/>
+            <button onClick={() => onDeleteHandler(notebookId, noteId)}>Delete note</button>
         </li>  
     );
 };

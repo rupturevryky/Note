@@ -12,6 +12,10 @@ type actionChangeFilter = {
     id: string,
     filter: 'all' | 'completed' | 'uncompleted'
 }
+type actionRenameNotebook = {
+  newNotebookName: string,
+  notebookId: string
+}
 const initialState: notebookType = {
     notebook: [
     { id: '1', title: "start", filter: 'all' },
@@ -32,10 +36,16 @@ export const notebookSlice = createSlice({
       if (changeTodo) {
         changeTodo.filter = action.payload.filter
       }
+    },
+    renameNotebook: (state, action: PayloadAction<actionRenameNotebook>) => {
+      const notebook = state.notebook.find(note => note.id === action.payload.notebookId)
+      if (notebook) {
+        notebook.title = action.payload.newNotebookName
+      }
     }
   },
 })
 
-export const { addNotebook, removeNotebook, changeFilter } = notebookSlice.actions
+export const { addNotebook, removeNotebook, changeFilter, renameNotebook } = notebookSlice.actions
 
 export default notebookSlice.reducer
