@@ -1,5 +1,50 @@
+@import '../../style/constants.scss';
+
 .li {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 8px 11px 8px 11px;
+    margin-bottom: 5px;
+    border-radius: 5px;
 
     list-style-type: none;
+
+    background-color: $bgcNodes;
+    box-shadow: $boxShadow;
+
+    cursor: pointer;
+
+    div{
+        display: flex;
+
+        input {
+            padding-left: 10px;
+            margin-right: 5px;
+
+            height: 35px;
+
+            border-radius: 3px;
+            border: 0;
+
+            background-color: $bgcNodes;
+
+            &:focus {
+                outline: none;
+                box-shadow: 1px 0px 29px -17px $bgcCards;
+              }
+        }
+        p {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    button{
+        margin-left: 5px;
+
+        border: 0;
+    }
+    
 }

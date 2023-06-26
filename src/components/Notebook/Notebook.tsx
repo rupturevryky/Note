@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useAppSelector } from "../../store/hooks"
 import NoteboockItems from "../NoteboockItems/NoteboockItems";
+
 import "./notebook.scss"
 
 const Noteboock: React.FC = () => {

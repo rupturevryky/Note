@@ -58,8 +58,7 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
         settitleInputIsActive(true)
     }
 
-    const renameStateTitle = (key?: string) => {                                            // key для функции onKeyDown,
-        if (key) {
+    const renameStateTitle = (key: string) => {                                            // key для функции onKeyDown,
             if (key === "Enter" && titleName.trim() !== '' && titleName !== title) {
                 dispatch(renameNotebook({ newNotebookName: titleName, notebookId: notebookId }))    // меняет title в state.notebook
                 settitleInputIsActive(false)
@@ -69,56 +68,57 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
                 setTitleName(title)
                 settitleInputIsActive(false)
             }
-        } else {                                                                            // в onBlur функция renameStateTitle проискодит без key
-            if (titleName.trim() !== '' && titleName !== title) {
-                dispatch(renameNotebook({ newNotebookName: titleName, notebookId: notebookId }))    // аналогично верхней части
-                settitleInputIsActive(false)
-            } else if (titleName.trim() !== '') {
-                settitleInputIsActive(false)
-            } else if (titleName.trim() === '') {
-                setTitleName(title)
-                settitleInputIsActive(false)
-            }
-        }
         
     }
 
     const AddTaskForm = AddTaskFormIsActive    
-        ? <><input                               // input с строкой для новой task-и
-            placeholder="Add your task..."
-            value={TaskFormValue}
-            onChange={e => setTaskFormValue(e.target.value)}      // Управляемый input для новой task-и
-            onKeyDown={e => EnterTaskFormHandler(e.key)}        // добавляет task-у по нажатию Enter
-            onBlur={addTaskHandler}
-            autoFocus/> 
-            <button onClick={addTaskHandler}>add</button></>  // создаёт task-у и убирает input
+        ? <div  className={s.AddTaskForm}>
+            <input                               // input с строкой для новой task-и
+                placeholder="Add your task..."
+
+                value={TaskFormValue}
+                onChange={e => setTaskFormValue(e.target.value)}      // Управляемый input для новой task-и
+                onKeyDown={e => EnterTaskFormHandler(e.key)}        // добавляет task-у по нажатию Enter
+                onBlur={addTaskHandler}
+                autoFocus/> 
+            <button onClick={addTaskHandler}>add</button></div>  // создаёт task-у и убирает input
         : null
     
-        const noteList = notes?.map(note => (       //создание мелких заметок
+        const noteList = notes?.map((note, place) => (       //создание мелких заметок
         <Note
             notebookId={notebookId}
             noteId={note.id}
             noteTitle={note.title}
             completed={note.completed}
-            key={note.id} />
+            key={note.id}
+            place={place}
+            />
         ))
     
-    const titleInput = titleInputIsActive                               // Заголовок
-            ? <input value={titleName}                              // input для смены заголовка
-                onChange={e => setTitleName(e.target.value)}
-                onKeyDown={e => renameStateTitle(e.key)}
-                onBlur={() => renameStateTitle()}
-                autoFocus/>
-            : <p onDoubleClick={toggleTitleInput}>{titleName}</p>        // обычный заголовок 
+    const titleInput = titleInputIsActive                               // notebook заголовок
+        ? <input                                                         // input для смены заголовка
+            value={titleName}                              
+            onChange={e => setTitleName(e.target.value)}
+            onKeyDown={e => renameStateTitle(e.key)}
+            onBlur={() => renameStateTitle("Enter")}
+            autoFocus/>
+        : <p                                                            // обычный <p> заголовок 
+            className={s.notebookTitle}
+            onDoubleClick={toggleTitleInput}>{titleName}</p>        
     
     return (
         <div className={s.noteboockItems}>
-            {titleInput}
+            {titleInput}                                                 {/* notebook заголовок */}
             <ul>
                 {noteList}
             </ul>
             {AddTaskForm}
-            <button onClick={addNewTaskHandler} className={s.addNewTaskButton}>Add new task</button> {/* Открывает и закрывает input для новой note-ы*/}
+            <button                             // Открывает и закрывает input для новой note-ы
+                onClick={addNewTaskHandler}
+                className={s.addNewTaskButton}>
+                <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 50 50" width="24px" height="24px"><path d="M 25 2 C 12.309295 2 2 12.309295 2 25 C 2 37.690705 12.309295 48 25 48 C 37.690705 48 48 37.690705 48 25 C 48 12.309295 37.690705 2 25 2 z M 25 4 C 36.609824 4 46 13.390176 46 25 C 46 36.609824 36.609824 46 25 46 C 13.390176 46 4 36.609824 4 25 C 4 13.390176 13.390176 4 25 4 z M 24 13 L 24 24 L 13 24 L 13 26 L 24 26 L 24 37 L 26 37 L 26 26 L 37 26 L 37 24 L 26 24 L 26 13 L 24 13 z"/></svg>
+                Add new task
+            </button> 
         </div> 
     )
 }
