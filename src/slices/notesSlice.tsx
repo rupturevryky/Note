@@ -57,10 +57,13 @@ export const notesSlice = createSlice({
       if (myNote) {
         myNote.title = action.payload.newNoteName
       }
+    }, 
+    removeNoteKey: (state, action: PayloadAction<string>) => {
+      delete state[action.payload]
     }
   },
 })
 
-export const { addNote, removeNote, toggleCompleted, addNotebookForNotesList,renameNote } = notesSlice.actions
+export const { addNote, removeNote, toggleCompleted, addNotebookForNotesList, renameNote, removeNoteKey } = notesSlice.actions
 
 export default notesSlice.reducer
