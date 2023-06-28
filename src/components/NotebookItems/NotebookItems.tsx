@@ -105,7 +105,7 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
                 onClick={addNewTaskHandler}
                 className={s.addNewTaskButton}
                 disabled={AddTaskBtnIsDisabled}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.5 19.5" width="18px" height="18px"><title>addBtn</title><g id="Слой_2" data-name="Слой 2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.5 19.5" width="18px" height="18px"><title>add task</title><g id="Слой_2" data-name="Слой 2">
                     <g id="Слой_1-2" data-name="Слой 1"><path d="M19.5,9.75a.58.58,0,0,1-.57.57H10.32v8.61a.57.57,0,0,1-1.14,0V10.32H.57a.57.57,0,0,1,0-1.14H9.18V.57a.57.57,0,0,1,1.14,0V9.18h8.61A.58.58,0,0,1,19.5,9.75Z" /></g></g></svg>
                 <div>Add new task</div>
             </button> 

@@ -8,23 +8,29 @@
 
     padding: 8px 0 8px 0;
 
-    p {
-        cursor: pointer;
+    .NotebookTitleForm{
+        display: flex;
+        flex-direction: column;
+    
+        input {
+            border-radius: 3px;
+            border: 0;
+            width: 100%;
+        
+            background-color: $bgcCards;
+    
+            &:focus {
+                outline: none;
+                -webkit-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+                -moz-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+                box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+            }
+        }
+        
     }
 
-    input {
-        border-radius: 3px;
-        border: 0;
-        width: 100%;
-    
-        background-color: $bgcCards;
-
-        &:focus {
-            outline: none;
-            -webkit-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-            -moz-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-            box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-        }
+    p {
+        cursor: pointer;
     }
 
     button {

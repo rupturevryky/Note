@@ -21,6 +21,22 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
     const toggleTitleInput = () => {
         settitleInputIsActive(true)
     }
+
+    const changeNotebookInputValue = (value: string) => {
+        if (titleName.length < 35 || value.length < titleName.length) {
+            setTitleName(value)
+        }
+    }
+    const NotebookInputLimit = () => titleName.length > 29 ? `Осталось ${35 - titleName.length} символов` : null
+    const NotebookInputLimitStyle = () => {
+        if (titleName.length === 35) {
+            return {color: 'red'}
+        }
+        if (titleName.length > 29) {
+            return {color: 'orange'}
+        }
+    }
+    
     const renameStateTitle = (key: string) => {                                            // key для функции onKeyDown,
         if (key === "Enter" && titleName.trim() !== '' && titleName !== title) {
             dispatch(renameNotebook({ newNotebookName: titleName, notebookId: notebookId }))    // меняет title в state.notebook
@@ -39,12 +55,16 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
     }
 
     const NotebookTitleInput = titleInputIsActive                               // notebook заголовок
-        ? <input                                                         // input для смены заголовка
+        ? <div className={s.NotebookTitleForm}>
+            <input                                                         // input для смены заголовка
             value={titleName}                              
-            onChange={e => setTitleName(e.target.value)}
+            onChange={e => changeNotebookInputValue(e.target.value)}
             onKeyDown={e => renameStateTitle(e.key)}
             onBlur={() => renameStateTitle("Enter")}
-            autoFocus/>
+            autoFocus />
+            <p style={NotebookInputLimitStyle()}
+            >{NotebookInputLimit()}</p>
+        </div>
         : <p                                                            // обычный <p> заголовок 
             onDoubleClick={toggleTitleInput}>{titleName}</p> 
     
