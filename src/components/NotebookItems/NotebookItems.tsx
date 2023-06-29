@@ -23,11 +23,12 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
     const [TaskFormValue, setTaskFormValue] = useState<string>('')
 
     const [AddTaskBtnIsDisabled, setAddTaskBtnIsDisabled] = useState<boolean>(false)
-
+    const [addBtnColor, setAddBtnColor] = useState<string>('#000')
 
     const EraseEverything = () => {
+        setAddBtnColor("#000")
         setTaskFormValue('')                                 // стирает локальный state
-        setAddTaskFormIsActive(false)                           // закрывает input для созданной task-и
+        setAddTaskFormIsActive(false)                           // закрывает input для созданной task-и  
     }
 
     const addTaskHandler = () => {
@@ -46,7 +47,6 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
     }
 
     const addNewTaskHandler = () => {
-
         if (!AddTaskBtnIsDisabled) {
             setAddTaskFormIsActive(true)        // активирует input
             setAddTaskBtnIsDisabled(true)      // блокирует кнопку активации инпута
@@ -59,7 +59,32 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
         }
     }
 
-    
+    const changeTaskFormValue = (value: string) => {
+        if (TaskFormValue.length < 25 || value.length < TaskFormValue.length) {
+            setTaskFormValue(value)
+            setAddBtnColor("#3CAA4E")
+        }
+        if (value.trim().length === 0) {
+            setAddBtnColor("#000")
+        }
+    }
+    const TaskFormLimit = () => TaskFormValue.length > 19 ? `Осталось ${25 - TaskFormValue.length} символов` : null
+    const TaskFormLimitStyle = () => {
+        if (TaskFormValue.length === 25) {
+            return {color: '#BC040E'}
+        }
+        if (TaskFormValue.length > 19) {
+            return {color: 'orange'}
+        }
+    }
+    const TaskFormStyle = () => {
+        let width = 150
+        if (TaskFormValue.length * 10 > width) {
+            width = TaskFormValue.length * 10
+        }
+        return {width: `${width}px`}
+    }
+
     const noteList = notes?.map((note, place) => (       //создание мелких заметок
     <Note
         notebookId={notebookId}
@@ -77,12 +102,16 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
                 placeholder="Add your task..."
 
                 value={TaskFormValue}
-                onChange={e => setTaskFormValue(e.target.value)}      // Управляемый input для новой task-и
+                style={TaskFormStyle()}
+                
+                onChange={e => changeTaskFormValue(e.target.value)}      // Управляемый input для новой task-и
                 onKeyDown={e => EnterTaskFormHandler(e.key)}        // добавляет task-у по нажатию Enter
                 onBlur={addTaskHandler}
-                autoFocus/> 
-             <button onClick={addTaskHandler}>       {/*  создаёт task-у и убирает input */}
+                autoFocus/>     
+            <button
+                style={addBtnColor === "#3CAA4E" ? {cursor: "pointer"} : {}}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.08 8.7" width="18px" height="18px"><title>save</title><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path
+                    fill={addBtnColor}
                     d="M5,8.7a.62.62,0,0,1-.44-.18L.18,4.15a.64.64,0,0,1,0-.89.64.64,0,0,1,.89,0L5,7.19l7-7a.64.64,0,0,1,.89,0,.64.64,0,0,1,0,.89L5.44,8.52A.62.62,0,0,1,5,8.7Z" /></g></g></svg>
             </button>
         </div>  
@@ -100,7 +129,7 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
             </ul>
 
             {AddTaskForm}
-            
+            <p style={TaskFormLimitStyle()}>{ TaskFormLimit() }</p>
             <button                             // Открывает и закрывает input для новой note-ы
                 onClick={addNewTaskHandler}
                 className={s.addNewTaskButton}

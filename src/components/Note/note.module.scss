@@ -18,48 +18,7 @@
 
     div{
         display: flex;
-
-        .NoteTitleForm{
-            display: flex;
-            flex-direction: column;
-
-            input {
-                
-                padding-left: 10px;
-                margin-right: 5px;
-    
-                height: 20px;
-                resize: vertical;
-    
-                border-radius: 3px;
-                border: 0;
-    
-                background-color: $bgcNodes;
-        
-                &:focus {
-                    outline: none;
-                    -webkit-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-                    -moz-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-                    box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
-                }
-            }
-            p {
-                margin-top: 5px;
-                margin-left: 10px;
-            }
-
-        }
-        .title {
-            display: flex;
-            align-items: center;
-            
-            padding-left: 10px;
-        }
-
-        .completedTitle {
-            text-decoration: line-through;
-            text-decoration-color: $completedText;
-        }
+        align-items: flex-start;
     }
 
     button{
@@ -68,7 +27,55 @@
         margin-left: 5px;
         border: 0;
     }
+}
+
+.checkboxStyle{
+    cursor: pointer;
+    transition: none;
+}
+
+
+.NoteTitleForm{
+    display: flex;
+    flex-direction: column;
+
+    input {
+        
+        margin-left: 4px;
+        margin-right: 5px;
+
+        height: 20px;
+        // resize: vertical;
+        transition: none;
+
+        border-radius: 3px;
+        border: 0;
+
+        background-color: $bgcNodes;
+
+        &:focus {
+            outline: none;
+            -webkit-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+            -moz-box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+            box-shadow: 0px -23px 0px -22px rgba(34, 60, 80, 0.13) inset;
+        }
+    }
+    p {
+        margin-top: 5px;
+        margin-left: 10px;
+    }
+}
+
+.title {
+    display: flex;
+    align-items: center;
     
+    padding-left: 10px;
+}
+
+.completedTitle {
+    text-decoration: line-through;
+    text-decoration-color: $completedText;
 }
 
 .completedColor {

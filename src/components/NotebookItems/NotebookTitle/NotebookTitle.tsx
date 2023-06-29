@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import { removeNotebook, renameNotebook } from "../../../slices/notebookSlice";
-import { removeNoteKey } from "../../../slices/notesSlice";
+import { renameNotebook } from "../../../slices/notebookSlice";
 import { useAppDispatch } from "../../../store/hooks";
+import IconBlock from "../../UI/IconBlock/IconBlock";
 
 import s from "./notebookTitle.module.scss"
 
@@ -30,11 +30,18 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
     const NotebookInputLimit = () => titleName.length > 29 ? `Осталось ${35 - titleName.length} символов` : null
     const NotebookInputLimitStyle = () => {
         if (titleName.length === 35) {
-            return {color: 'red'}
+            return {color: '#BC040E'}
         }
         if (titleName.length > 29) {
             return {color: 'orange'}
         }
+    }
+    const NotebookInputStyle = () => {
+        let width = 150
+        if (titleName.length * 9 > width) {
+            width = titleName.length * 9
+        }
+        return {width: `${width}px`}
     }
     
     const renameStateTitle = (key: string) => {                                            // key для функции onKeyDown,
@@ -49,19 +56,15 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
         }
     }
 
-    const closeNotebook = () => {
-        dispatch(removeNotebook(notebookId))
-        dispatch(removeNoteKey(notebookId))
-    }
-
     const NotebookTitleInput = titleInputIsActive                               // notebook заголовок
         ? <div className={s.NotebookTitleForm}>
             <input                                                         // input для смены заголовка
-            value={titleName}                              
-            onChange={e => changeNotebookInputValue(e.target.value)}
-            onKeyDown={e => renameStateTitle(e.key)}
-            onBlur={() => renameStateTitle("Enter")}
-            autoFocus />
+                value={titleName}  
+                style={NotebookInputStyle()}    
+                onChange={e => changeNotebookInputValue(e.target.value)}
+                onKeyDown={e => renameStateTitle(e.key)}
+                onBlur={() => renameStateTitle("Enter")}
+                autoFocus />
             <p style={NotebookInputLimitStyle()}
             >{NotebookInputLimit()}</p>
         </div>
@@ -71,11 +74,11 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
     return (
         <div className={s.notebookTitle}>
             {NotebookTitleInput}
-            <button
-            onClick={closeNotebook}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.12 14.12" width="18px" height="18px"><title>closeBtn</title><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path
-                    d="M14,.16A.58.58,0,0,1,14,1L7.86,7.06,14,13.15a.57.57,0,1,1-.8.8L7.06,7.86,1,14a.58.58,0,0,1-.81,0,.59.59,0,0,1,0-.8L6.25,7.06.16,1a.6.6,0,0,1,0-.81A.6.6,0,0,1,1,.16L7.06,6.25,13.15.16A.59.59,0,0,1,14,.16Z" /></g></g></svg>
-            </button>
+
+            <IconBlock
+                notebookId={notebookId}
+                btn = {'rmNotebook'}
+            />
         </div>
     );
 };
