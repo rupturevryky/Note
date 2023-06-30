@@ -11,7 +11,7 @@
 
     list-style-type: none;
 
-    background-color: $bgcNodes;
+    background-color:$bgcNodes;
     box-shadow: $boxShadow;
 
     cursor: pointer;
@@ -24,8 +24,13 @@
     button{
         cursor: pointer;
         
+        background-color: transparent;
+        
         margin-left: 5px;
         border: 0;
+    }
+    &:hover {
+        background-color: $bgcNodesHover;
     }
 }
 
@@ -45,13 +50,13 @@
         margin-right: 5px;
 
         height: 20px;
-        // resize: vertical;
+        
         transition: none;
 
         border-radius: 3px;
         border: 0;
 
-        background-color: $bgcNodes;
+        background-color: transparent;
 
         &:focus {
             outline: none;

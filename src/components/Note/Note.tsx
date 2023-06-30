@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { renameNote } from '../../slices/notesSlice';
+import { renameNote, toggleCompleted } from '../../slices/notesSlice';
 import { useAppDispatch } from '../../store/hooks'
 import IconBlock from '../UI/IconBlock/IconBlock';
 
@@ -19,7 +19,7 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
 
     const [noteNameInputActive, setNoteNameInputActive] = useState<boolean>(false)
     const [noteName, setNoteName] = useState(noteTitle)
-    
+
     const renameNoteTitle = (key: string) => {
             if (key === "Enter" && noteName.trim() !== '' && noteName !== noteTitle) {
                 dispatch(renameNote({ notebookId: notebookId, noteId: noteId, newNoteName: noteName }))    // меняет title в state.notebook
@@ -52,6 +52,12 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
             return {color: 'orange'}
         }
     }
+
+    const onChangeCheckboxHandler = (notebookId: string, noteId: string, e: React.MouseEvent<HTMLLIElement>) => {
+            const action = { notebookId: notebookId, noteId: noteId }
+            dispatch(toggleCompleted(action))
+    }
+    
     const NoteInputStyle = () => {
         let width = 150
         if (noteName.length * 10 > width) {
@@ -82,6 +88,7 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     return (
         <li
             onDoubleClick={(e) => activateNoteForm(e)}
+            onClick={(e) => onChangeCheckboxHandler(notebookId, noteId, e)}
             className={s.li}>
             <div>
                 <IconBlock

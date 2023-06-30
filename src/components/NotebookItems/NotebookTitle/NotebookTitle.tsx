@@ -68,8 +68,7 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
             <p style={NotebookInputLimitStyle()}
             >{NotebookInputLimit()}</p>
         </div>
-        : <p                                                            // обычный <p> заголовок 
-            onDoubleClick={toggleTitleInput}>{titleName}</p> 
+        : <p onDoubleClick={toggleTitleInput}>{titleName}</p> 
     
     return (
         <div className={s.notebookTitle}>

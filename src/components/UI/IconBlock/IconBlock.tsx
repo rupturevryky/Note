@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { useAppDispatch } from "../../../store/hooks";
 import { removeNotebook } from "../../../slices/notebookSlice";
-import { removeNoteKey, removeNote, toggleCompleted } from "../../../slices/notesSlice";
+import { removeNoteKey, removeNote } from "../../../slices/notesSlice";
 
 interface IconBlockProps {
     btn: string
@@ -20,7 +20,7 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
     const dispatch = useAppDispatch()
     
     const [BtnColor, setBtnColor] = useState<string>(completed && completedColor ? completedColor : '#000')
-
+    
     const changeBtnColor = (color?: string) => {
         if (completed && completedActiveColor && color) {
             setBtnColor(completedActiveColor)
@@ -32,6 +32,9 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
             setBtnColor('#000')
         }
     }
+
+    // eslint-disable-next-line
+    useEffect(changeBtnColor, [completed])
 
     let tsx;
     
@@ -69,11 +72,9 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
                         fill={ BtnColor } /></svg>
                 </button>
             )
-    } else if (btn === 'checked' && noteId && completedActiveColor) {
-
-        const onChangeCheckboxHandler = (notebookId: string, noteId: string) => {
-            const action = { notebookId: notebookId, noteId: noteId }
-            dispatch(toggleCompleted(action))
+    } else if (btn === 'checked' && completedActiveColor && noteId) {
+        
+        const onChangeCheckboxHandler = () => {
             if (completed) {
                 setBtnColor(activeColor)
             } else {
@@ -85,7 +86,7 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
             <button
                 onMouseEnter={ () => changeBtnColor("colorGreen") }
                 onMouseLeave={ () => changeBtnColor() }
-                onClick={() => onChangeCheckboxHandler(notebookId, noteId)}>
+                onClick={onChangeCheckboxHandler}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.08 8.7" width="18px" height="18px"><title>toggle</title><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path
                     fill={BtnColor}
                     d="M5,8.7a.62.62,0,0,1-.44-.18L.18,4.15a.64.64,0,0,1,0-.89.64.64,0,0,1,.89,0L5,7.19l7-7a.64.64,0,0,1,.89,0,.64.64,0,0,1,0,.89L5.44,8.52A.62.62,0,0,1,5,8.7Z" /></g></g></svg>

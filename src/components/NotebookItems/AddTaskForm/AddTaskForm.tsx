@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { addNote } from "../../../slices/notesSlice";
 import { useAppDispatch } from "../../../store/hooks";
@@ -13,7 +13,6 @@ interface AddTaskFormProps {
 
 const AddTaskForm: React.FC<AddTaskFormProps> = ({notebookId, setAddTaskFormIsActive, setAddTaskBtnIsDisabled}) => {
 
-    let input = useRef<HTMLInputElement>(null);
     const dispatch = useAppDispatch()
 
     const [TaskFormValue, setTaskFormValue] = useState<string>('')
@@ -73,7 +72,6 @@ const AddTaskForm: React.FC<AddTaskFormProps> = ({notebookId, setAddTaskFormIsAc
             <div className={s.AddTaskForm}>
                 <input                               // input с строкой для новой task-и
                     placeholder="Add your task..."
-                    ref={input}
                     value={TaskFormValue}
                     
                     onChange={e => changeTaskFormValue(e.target)}      // Управляемый input для новой task-и
