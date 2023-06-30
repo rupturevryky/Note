@@ -17,7 +17,7 @@ type AddNote = {
 }
 
 type Note = {
-  nodebookId: string,
+  notebookId: string,
   noteId: string
 }
 type actionRenameNote = {
@@ -41,10 +41,10 @@ export const notesSlice = createSlice({
       state[action.payload.nodebookId].push({id: uuidv1(), title: action.payload.title, completed: false})
     },
     removeNote: (state, action: PayloadAction<Note>) => { 
-      state[action.payload.nodebookId] = state[action.payload.nodebookId].filter(note => note.id !== action.payload.noteId)
+      state[action.payload.notebookId] = state[action.payload.notebookId].filter(note => note.id !== action.payload.noteId)
     },
     toggleCompleted: (state, action: PayloadAction<Note>) => { 
-      const toggledTodo = state[action.payload.nodebookId].find(note => note.id === action.payload.noteId)
+      const toggledTodo = state[action.payload.notebookId].find(note => note.id === action.payload.noteId)
       if (toggledTodo) {
         toggledTodo.completed = !toggledTodo.completed
       }

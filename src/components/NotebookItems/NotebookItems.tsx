@@ -1,9 +1,10 @@
 import { useState } from "react";
 
-import { addNote } from "../../slices/notesSlice";
-import { useAppSelector, useAppDispatch } from "../../store/hooks"
+import { useAppSelector } from "../../store/hooks"
+
 import Note from "../Note/Note";
 import NotebookTitle from "./NotebookTitle/NotebookTitle";
+import AddTaskForm from "./AddTaskForm/AddTaskForm";
 
 import s from "./notebookItems.module.scss"
 
@@ -16,35 +17,11 @@ interface NoteboockItemsProos {
 
 const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, filter }) => {
     
-    const dispatch = useAppDispatch()
     const notes = useAppSelector(state => state.notes[notebookId])
 
     const [AddTaskFormIsActive, setAddTaskFormIsActive] = useState<boolean>(false)    // локальный стейт для добавления note-ы
-    const [TaskFormValue, setTaskFormValue] = useState<string>('')
 
     const [AddTaskBtnIsDisabled, setAddTaskBtnIsDisabled] = useState<boolean>(false)
-    const [addBtnColor, setAddBtnColor] = useState<string>('#000')
-
-    const EraseEverything = () => {
-        setAddBtnColor("#000")
-        setTaskFormValue('')                                 // стирает локальный state
-        setAddTaskFormIsActive(false)                           // закрывает input для созданной task-и  
-    }
-
-    const addTaskHandler = () => {
-        if (TaskFormValue && TaskFormValue.trim() !== '') {                // проверка input-а на пустоту
-            const action = { nodebookId: notebookId, title: TaskFormValue }
-            dispatch(addNote(action))                                      // создаёт новую заметку
-            EraseEverything()
-
-            setTimeout( ()=> setAddTaskBtnIsDisabled(false), 200)   // setTimeout нужен, чтобы если прользователь кликнет на кнопку Add new task, не появлялся сразу
-        } else {                                                                                                                                // новый инпут
-            EraseEverything()
-
-            setAddTaskBtnIsDisabled(false)
-        }
-        
-    }
 
     const addNewTaskHandler = () => {
         if (!AddTaskBtnIsDisabled) {
@@ -53,68 +30,26 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
         }
     }
 
-    const EnterTaskFormHandler = (key: string) => {
-        if (key === "Enter") {
-            addTaskHandler()
-        }
-    }
+    const noteList =
+        <ul>
+            {notes?.map((note, place) => (       //создание мелких заметок
+                <Note
+                    notebookId={notebookId}
+                    noteId={note.id}
+                    noteTitle={note.title}
+                    completed={note.completed}
+                    key={note.id}
+                    place={place}
+                />
+            ))}
+        </ul>
 
-    const changeTaskFormValue = (value: string) => {
-        if (TaskFormValue.length < 25 || value.length < TaskFormValue.length) {
-            setTaskFormValue(value)
-            setAddBtnColor("#3CAA4E")
-        }
-        if (value.trim().length === 0) {
-            setAddBtnColor("#000")
-        }
-    }
-    const TaskFormLimit = () => TaskFormValue.length > 19 ? `Осталось ${25 - TaskFormValue.length} символов` : null
-    const TaskFormLimitStyle = () => {
-        if (TaskFormValue.length === 25) {
-            return {color: '#BC040E'}
-        }
-        if (TaskFormValue.length > 19) {
-            return {color: 'orange'}
-        }
-    }
-    const TaskFormStyle = () => {
-        let width = 150
-        if (TaskFormValue.length * 10 > width) {
-            width = TaskFormValue.length * 10
-        }
-        return {width: `${width}px`}
-    }
 
-    const noteList = notes?.map((note, place) => (       //создание мелких заметок
-    <Note
-        notebookId={notebookId}
-        noteId={note.id}
-        noteTitle={note.title}
-        completed={note.completed}
-        key={note.id}
-        place={place}
-        />
-    ))
-    
-    const AddTaskForm = AddTaskFormIsActive    
-        ? <div  className={s.AddTaskForm}>
-            <input                               // input с строкой для новой task-и
-                placeholder="Add your task..."
-
-                value={TaskFormValue}
-                style={TaskFormStyle()}
-                
-                onChange={e => changeTaskFormValue(e.target.value)}      // Управляемый input для новой task-и
-                onKeyDown={e => EnterTaskFormHandler(e.key)}        // добавляет task-у по нажатию Enter
-                onBlur={addTaskHandler}
-                autoFocus/>     
-            <button
-                style={addBtnColor === "#3CAA4E" ? {cursor: "pointer"} : {}}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.08 8.7" width="18px" height="18px"><title>save</title><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path
-                    fill={addBtnColor}
-                    d="M5,8.7a.62.62,0,0,1-.44-.18L.18,4.15a.64.64,0,0,1,0-.89.64.64,0,0,1,.89,0L5,7.19l7-7a.64.64,0,0,1,.89,0,.64.64,0,0,1,0,.89L5.44,8.52A.62.62,0,0,1,5,8.7Z" /></g></g></svg>
-            </button>
-        </div>  
+    const AddTaskFormBlock = AddTaskFormIsActive ?
+        <AddTaskForm
+            notebookId={notebookId}
+            setAddTaskFormIsActive={setAddTaskFormIsActive}
+            setAddTaskBtnIsDisabled={setAddTaskBtnIsDisabled} />
         : null
     
     return (
@@ -122,14 +57,13 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
 
             <NotebookTitle                  // notebook заголовок
                 notebookId={notebookId}
-                title={title} />
+                title={title}
+            />
             
-            <ul>
-                {noteList}              {/*      список из <Note/>       */}
-            </ul>
+            {noteList}              {/*      список из <Note/>       */}
 
-            {AddTaskForm}
-            <p style={TaskFormLimitStyle()}>{ TaskFormLimit() }</p>
+            {AddTaskFormBlock}
+            
             <button                             // Открывает и закрывает input для новой note-ы
                 onClick={addNewTaskHandler}
                 className={s.addNewTaskButton}

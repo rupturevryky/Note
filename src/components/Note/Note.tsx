@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { renameNote, toggleCompleted } from '../../slices/notesSlice';
+import { renameNote } from '../../slices/notesSlice';
 import { useAppDispatch } from '../../store/hooks'
 import IconBlock from '../UI/IconBlock/IconBlock';
 
@@ -20,11 +20,6 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     const [noteNameInputActive, setNoteNameInputActive] = useState<boolean>(false)
     const [noteName, setNoteName] = useState(noteTitle)
     
-    const onChangeCheckboxHandler = (nodebookId: string, noteId: string) => {
-        const action = { nodebookId: nodebookId, noteId: noteId }
-        dispatch(toggleCompleted(action))
-    }
-
     const renameNoteTitle = (key: string) => {
             if (key === "Enter" && noteName.trim() !== '' && noteName !== noteTitle) {
                 dispatch(renameNote({ notebookId: notebookId, noteId: noteId, newNoteName: noteName }))    // меняет title в state.notebook
@@ -66,7 +61,6 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     }
 
     const textStyle = () => completed ? `${s.title} ${s.completedTitle} ${s.completedColor}` : `${s.title}`
-    const checkboxMgTopStyle = () => noteNameInputActive ? {marginTop: "5px"} : {}
     
     const noteNameBlock = noteNameInputActive
         ?   <div className={s.NoteTitleForm}>
@@ -90,15 +84,23 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
             onDoubleClick={(e) => activateNoteForm(e)}
             className={s.li}>
             <div>
-                <input type="checkbox" name="checkbox" id='checkbox' checked={completed} className={s.checkboxStyle}
-                    onChange={() => onChangeCheckboxHandler(notebookId, noteId)}
-                    style={ checkboxMgTopStyle() } />
+                <IconBlock
+                    notebookId={notebookId}
+                    btn={"checked"}
+                    activeColor={"#3CAA4E"}
+
+                    noteId={noteId}
+                    completedColor={"#AFB1B2"}
+                    completedActiveColor={"#BC040E"}
+                    completed={completed}
+                />
                 {noteNameBlock}
             </div>
             
             <IconBlock
                 notebookId={notebookId}
                 btn={"rmNote"}
+                activeColor={"#BC040E"}
 
                 noteId={noteId}
                 completedColor={"#AFB1B2"}
@@ -106,7 +108,6 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
             />
         </li>  
     )
-    
 }
 
 export default Note;

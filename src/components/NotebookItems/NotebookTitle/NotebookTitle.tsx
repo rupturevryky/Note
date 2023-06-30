@@ -77,7 +77,8 @@ const NotebookTitle: React.FC<NotebookTitleProps> = ({ title, notebookId }) => {
 
             <IconBlock
                 notebookId={notebookId}
-                btn = {'rmNotebook'}
+                btn={'rmNotebook'}
+                activeColor={"#BC040E"}
             />
         </div>
     );
