@@ -53,9 +53,9 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
         }
     }
 
-    const onChangeCheckboxHandler = (notebookId: string, noteId: string, e: React.MouseEvent<HTMLLIElement>) => {
-            const action = { notebookId: notebookId, noteId: noteId }
-            dispatch(toggleCompleted(action))
+    const onChangeCheckboxHandler = (notebookId: string, noteId: string) => {
+        const action = { notebookId: notebookId, noteId: noteId }
+        dispatch(toggleCompleted(action))
     }
     
     const NoteInputStyle = () => {
@@ -88,7 +88,7 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     return (
         <li
             onDoubleClick={(e) => activateNoteForm(e)}
-            onClick={(e) => onChangeCheckboxHandler(notebookId, noteId, e)}
+            onClick={() => onChangeCheckboxHandler(notebookId, noteId)}
             className={s.li}>
             <div>
                 <IconBlock
