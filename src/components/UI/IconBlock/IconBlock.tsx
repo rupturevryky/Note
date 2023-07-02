@@ -22,15 +22,11 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
     const [BtnColor, setBtnColor] = useState<string>(completed && completedColor ? completedColor : '#000')
     
     const changeBtnColor = (color?: string) => {
-        if (completed && completedActiveColor && color) {
-            setBtnColor(completedActiveColor)
-        } else if (color) {
-            setBtnColor(activeColor)
-        } else if (completedColor && completed) {
-            setBtnColor(completedColor)
-        } else {
-            setBtnColor('#000')
-        }
+        if (completed && completedActiveColor && color) setBtnColor(completedActiveColor)
+        else if (color) setBtnColor(activeColor)
+        else if (completedColor && completed) setBtnColor(completedColor)
+        else setBtnColor('#000')
+        
     }
 
     // eslint-disable-next-line
