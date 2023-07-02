@@ -7,11 +7,12 @@ import NotebookTitle from "./NotebookTitle/NotebookTitle";
 import AddTaskForm from "./AddTaskForm/AddTaskForm";
 
 import s from "./notebookItems.module.scss"
+import Filter from "./Filter/Filter";
 
 
 interface NoteboockItemsProos {
-    notebookId: string,
-    title: string,
+    notebookId: string
+    title: string
     filter: 'all' | 'completed' | 'uncompleted'
 }
 
@@ -21,7 +22,9 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
 
     const [AddTaskFormIsActive, setAddTaskFormIsActive] = useState<boolean>(false)    // локальный стейт для добавления note-ы
 
-    const [AddTaskBtnIsDisabled, setAddTaskBtnIsDisabled] = useState<boolean>(false)
+    const [AddTaskBtnIsDisabled, setAddTaskBtnIsDisabled] = useState<boolean>(false)    // локальный стейт для блокировки AddTaskBtn
+
+    const [activateFilter, setActivateFilter] = useState<boolean>(false)    // локальный стейт для сокрытия и открытия Filter
 
     const addNewTaskHandler = () => {
         if (!AddTaskBtnIsDisabled) {
@@ -30,18 +33,45 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
         }
     }
 
+    const stateCompleted = () => {
+        if (filter === 'all') return null
+        else if (filter === 'completed') return true
+        else return false
+    }
+    
+    const filteredNotes = () => {           // массив отфильтрованных мелких заметок
+        if (stateCompleted() !== null) {
+            return notes?.filter(note => note.completed === stateCompleted())
+        } else return false
+    } 
+
     const noteList =
         <ul>
-            {notes?.map((note, place) => (       //создание мелких заметок
-                <Note
-                    notebookId={notebookId}
-                    noteId={note.id}
-                    noteTitle={note.title}
-                    completed={note.completed}
-                    key={note.id}
-                    place={place}
-                />
-            ))}
+            {filteredNotes()
+                //@ts-ignore
+                ? filteredNotes().map((note, place) => (       //создание отфильтрованных мелких заметок
+                    <Note
+                        notebookId={notebookId}
+                        noteId={note.id}
+                        noteTitle={note.title}
+                        completed={note.completed}
+                        key={note.id}
+                        place={place}
+                    />
+                ))
+                : notes?.map((note, place) => (       //создание мелких заметок
+                    <Note
+                        notebookId={notebookId}
+                        noteId={note.id}
+                        noteTitle={note.title}
+                        completed={note.completed}
+                        key={note.id}
+                        place={place}
+                    />
+                ))
+            }
+
+            
         </ul>
 
 
@@ -53,16 +83,18 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
         : null
     
     return (
-        <div className={s.noteboockItems}>
+        <div className={s.noteboockItems}
+            onMouseOver={() => setActivateFilter(true)}
+            onMouseLeave={() => setActivateFilter(false)}>
 
             <NotebookTitle                  // notebook заголовок
                 notebookId={notebookId}
                 title={title}
             />
             
-            {noteList}              {/*      список из <Note/>       */}
+            {noteList}{/*                         список из <Note/>                       */}
 
-            {AddTaskFormBlock}
+            {AddTaskFormBlock}{/*                 input для добавления новой note-ы       */}
             
             <button                             // Открывает и закрывает input для новой note-ы
                 onClick={addNewTaskHandler}
@@ -73,6 +105,7 @@ const NoteboockItems: React.FC<NoteboockItemsProos> = ({  notebookId, title, fil
                 <div>Add new task</div>
             </button> 
 
+            {activateFilter ? <Filter notebookId={notebookId} active={activateFilter}/> : null}
         </div> 
     )
 }

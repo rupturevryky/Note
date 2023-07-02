@@ -3,13 +3,14 @@
 .noteboockItems {
     text-align: left;
    
-    height: auto;
-    // min-width: 280px;
+    min-width: 155px;
     border-radius: 4px;
     padding: 12px;
     margin: 8px;
     
     background-color: $bgcCards;
+
+    transition: all 1s ease;
 }
 
 .addNewTaskButton{
@@ -44,7 +45,7 @@
     }
 
     &:hover {
-        background-color: $addBtnHover;
+        background-color: $BtnBlockHover;
     }
 
     &:disabled, button[disabled]{

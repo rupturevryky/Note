@@ -1,9 +1,7 @@
-import React from 'react';
-
 import { useAppSelector } from "../../store/hooks"
 import NotebookItems from "../NotebookItems/NotebookItems";
 
-import "./notebook.scss"
+// import s from "./notebook.scss"
 
 const Noteboock: React.FC = () => {
 
