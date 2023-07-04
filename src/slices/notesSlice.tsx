@@ -2,9 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v1 as uuidv1 } from 'uuid';
 
 type Todo = {
-    id: string,
-    title: string,
-    completed: boolean
+  id: string
+  title: string
+  description: string
+  details: string
+  completed: boolean
 }
 
 type TodosState = {
@@ -20,16 +22,18 @@ type Note = {
   notebookId: string,
   noteId: string
 }
-type actionRenameNote = {
+type actionEditNote = {
   notebookId: string,
   noteId: string,
-  newNoteName: string
+  title: string
+  description: string
+  details: string
 }
 
 const initialState: TodosState = {
   '1': [
-    { id: uuidv1(), title: "first note", completed: true },
-    { id: uuidv1(), title: "second note", completed: false }
+    { id: uuidv1(), title: "first note", description: 'first description', details: 'first description', completed: true },
+    { id: uuidv1(), title: "second note",  description: '', details: '', completed: false }
   ]
 }
 
@@ -38,7 +42,7 @@ export const notesSlice = createSlice({
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<AddNote>) => {
-      state[action.payload.nodebookId].push({id: uuidv1(), title: action.payload.title, completed: false})
+      state[action.payload.nodebookId].push({id: uuidv1(), title: action.payload.title, completed: false, description: '', details: ''})
     },
     removeNote: (state, action: PayloadAction<Note>) => { 
       state[action.payload.notebookId] = state[action.payload.notebookId].filter(note => note.id !== action.payload.noteId)
@@ -52,10 +56,12 @@ export const notesSlice = createSlice({
     addNotebookForNotesList: (state, action: PayloadAction<string>) => {
       state[action.payload] = []
     },
-    renameNote: (state, action: PayloadAction<actionRenameNote>) => {
+    edit: (state, action: PayloadAction<actionEditNote>) => {
       const myNote = state[action.payload.notebookId].find(note => note.id === action.payload.noteId)
       if (myNote) {
-        myNote.title = action.payload.newNoteName
+        myNote.title = action.payload.title
+        myNote.description = action.payload.description
+        myNote.details = action.payload.details
       }
     }, 
     removeNoteKey: (state, action: PayloadAction<string>) => {
@@ -64,6 +70,6 @@ export const notesSlice = createSlice({
   },
 })
 
-export const { addNote, removeNote, toggleCompleted, addNotebookForNotesList, renameNote, removeNoteKey } = notesSlice.actions
+export const { addNote, removeNote, toggleCompleted, addNotebookForNotesList, edit, removeNoteKey } = notesSlice.actions
 
 export default notesSlice.reducer

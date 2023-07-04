@@ -11,3 +11,17 @@ $boxShadow: 0px 3px 3px -2px rgba(34, 60, 80, 0.2);
 .cursorPointer {
     cursor: pointer;
 }
+
+// @keyframes Opacity {
+//     0% { opacity: 0 }
+//     100% {opacity: 1}
+// }
+
+// @mixin animation($opacity) {
+//     animation-duration: 2s;
+//     @keyframes Opacity {
+//         0% { opacity: 0; }
+//         100% { opacity: #{$opacity}; }
+//     }
+//     animation-duration: 2s;
+// }

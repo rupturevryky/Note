@@ -1,7 +1,9 @@
 .App {
+  position: relative;
+
   display: flex;
   flex-wrap: wrap;
-  align-items: start;
+  align-items: flex-start;
 
-  position: relative;
+  width: 100%;
 }

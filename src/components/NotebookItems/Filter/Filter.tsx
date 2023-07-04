@@ -14,7 +14,7 @@ const Filter: React.FC<FilterProps> = ({ notebookId, active }) => {
     const notebook = useAppSelector(state => state.notebook.notebook.find(OneNotebook => OneNotebook.id === notebookId))
     const filter = notebook?.filter
 
-    const fideStyle: object = active ? { opacity: 1 } : {}
+    // const fideStyle: object = active ? { opacity: 1 } : {}
     
     const dispatchFilter = (value: 'all' | 'completed' | 'uncompleted') => {
         const action = {id: notebookId, filter: value}
@@ -22,7 +22,7 @@ const Filter: React.FC<FilterProps> = ({ notebookId, active }) => {
     }
     
     return (
-        <div className={s.filter} style={fideStyle} >
+        <div className={s.filter} >
             <button style={filter === 'all' ? {backgroundColor: '#f2f2f2'} : {}} onClick={() => dispatchFilter('all')}>all</button>
             <button style={filter === 'completed' ? {backgroundColor: '#f2f2f2'} : {}} onClick={() => dispatchFilter('completed')}>done</button>
             <button  style={filter === 'uncompleted' ? {backgroundColor: '#f2f2f2'} : {}} onClick={() => dispatchFilter('uncompleted')}>undone</button>

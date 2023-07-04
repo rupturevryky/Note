@@ -1,6 +1,7 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 
-import { renameNote, toggleCompleted } from '../../slices/notesSlice';
+// import { toggleCompleted } from '../../slices/notesSlice';
+import { toggleWindow } from '../../slices/windowsActiveManager';
 import { useAppDispatch } from '../../store/hooks'
 import IconBlock from '../UI/IconBlock/IconBlock';
 
@@ -17,9 +18,10 @@ interface NoteProps{
 const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, place }) => {
 
     const dispatch = useAppDispatch()
+    // const noteItemsActive = useAppSelector(store => store.windows.noteItems.active )
 
-    const [noteNameInputActive, setNoteNameInputActive] = useState<boolean>(false)
-    const [noteName, setNoteName] = useState(noteTitle)
+    // const [noteNameInputActive, setNoteNameInputActive] = useState<boolean>(false)
+    // const [noteName, setNoteName] = useState(noteTitle)
 
     // const renameNoteTitle = (key: string) => {
     //         if (key === "Enter" && noteName.trim() !== '' && noteName !== noteTitle) {
@@ -35,7 +37,7 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
 
     const activateNoteForm = (e: React.MouseEvent<HTMLLIElement | HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
-            setNoteNameInputActive(true)
+            dispatch(toggleWindow({ window: 'noteItems', notebookId: notebookId, noteId: noteId}))
         }
     }
 
@@ -54,10 +56,10 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     //     }
     // }
 
-    const onChangeCheckboxHandler = (notebookId: string, noteId: string) => {
-        const action = { notebookId: notebookId, noteId: noteId }
-        dispatch(toggleCompleted(action))
-    }
+    // const onChangeCheckboxHandler = (notebookId: string, noteId: string) => {
+    //     const action = { notebookId: notebookId, noteId: noteId }
+    //     dispatch(toggleCompleted(action))
+    // }
     
     // const NoteInputStyle = () => {
     //     let width = 150
@@ -89,8 +91,8 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
     
     return (
         <li
-            onDoubleClick={(e) => activateNoteForm(e)}
-            onClick={() => onChangeCheckboxHandler(notebookId, noteId)}
+            onClick={(e) => activateNoteForm(e)}
+            // onClick={() => onChangeCheckboxHandler(notebookId, noteId)}
             className={s.li}>
             <div>
                 <IconBlock
@@ -105,8 +107,8 @@ const Note: React.FC<NoteProps> = ({ notebookId, noteId, noteTitle, completed, p
                 />
             <div
                 className={textStyle()}
-                onDoubleClick={(e) => activateNoteForm(e)}>
-                {noteName}
+                onClick={(e) => activateNoteForm(e)}>
+                {noteTitle}
             </div>
             </div>
             

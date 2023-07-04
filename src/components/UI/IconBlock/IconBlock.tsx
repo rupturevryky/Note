@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useAppDispatch } from "../../../store/hooks";
 import { removeNotebook } from "../../../slices/notebookSlice";
-import { removeNoteKey, removeNote } from "../../../slices/notesSlice";
+import { removeNoteKey, removeNote, toggleCompleted } from "../../../slices/notesSlice";
 
 interface IconBlockProps {
     btn: string
@@ -28,9 +28,6 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
         else setBtnColor('#000')
         
     }
-
-    // eslint-disable-next-line
-    useEffect(changeBtnColor, [completed])
 
     let tsx;
     
@@ -70,11 +67,18 @@ const IconBlock: React.FC<IconBlockProps> = ({  btn, notebookId, noteId, complet
             )
     } else if (btn === 'checked' && completedActiveColor && noteId) {
         
+        const onClikHandler = () => {
+            const action = { notebookId: notebookId, noteId: noteId }
+            dispatch(toggleCompleted(action))
+
+            completed ? setBtnColor(activeColor) : setBtnColor(completedActiveColor)
+        }
+        
         tsx = (
             <button
                 onMouseEnter={ () => changeBtnColor("colorGreen") }
                 onMouseLeave={ () => changeBtnColor() }
-                onClick={() => setTimeout(() => completed ? setBtnColor(activeColor) : setBtnColor(completedActiveColor), 10)}>
+                onClick={onClikHandler}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.08 8.7" width="18px" height="18px">
                     <title id="icon">toggle</title><g id="Слой_2" data-name="Слой 2"><g id="Слой_1-2" data-name="Слой 1"><path
                         fill={BtnColor}
